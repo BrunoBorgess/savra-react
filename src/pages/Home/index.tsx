@@ -14,27 +14,27 @@ import logoSavra from "../../assets/logo-savra.png";
 import { FaWhatsapp } from "react-icons/fa";
 
 function Home() {
-  useEffect(() => {
-    const handleScroll = (e) => {
-      e.preventDefault();
-      const targetId = e.currentTarget.getAttribute("href");
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: "smooth" });
-      }
-    };
+useEffect(() => {
+  const handleScroll = (e: Event) => {
+    e.preventDefault();
 
-    const anchors = document.querySelectorAll('a[href^="#"]');
-    anchors.forEach(anchor => {
-      anchor.addEventListener("click", handleScroll);
-    });
+    const target = e.currentTarget as HTMLAnchorElement;
+    const targetId = target.getAttribute("href");
+    if (!targetId) return;
 
-    return () => {
-      anchors.forEach(anchor => {
-        anchor.removeEventListener("click", handleScroll);
-      });
-    };
-  }, []);
+    const targetElement = document.querySelector<HTMLElement>(targetId);
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const anchors = Array.from(document.querySelectorAll('a[href^="#"]'));
+  anchors.forEach(anchor => anchor.addEventListener("click", handleScroll));
+
+  return () => {
+    anchors.forEach(anchor => anchor.removeEventListener("click", handleScroll));
+  };
+}, []);
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-b from-black via-purple-900 to-gray-900 text-white overflow-hidden relative">
